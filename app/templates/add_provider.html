@@ -1,0 +1,224 @@
+{% extends 'base.html' %}
+
+{%block title %}Add providers {% endblock title %}
+
+{% block navbar %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbar"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbar">
+      <div class="navbar-nav">
+        
+        <a class="nav-item nav-link" id="home" href="/">Home</a>
+        <a class="nav-item nav-link" id="settings" href="/settings">Settings</a>
+        <a class="nav-item nav-link" id="logout" href="/logout-confirm-add-provider">Logout</a>
+        
+      </div>
+    </div>
+  </nav>
+{% endblock %}
+
+{% block content %}
+
+
+<div class="container mt-5">
+<div class="row justify-content-center">
+<div class="card" style="width: 30rem;">
+<article class="card-body">
+    <h2 class="card-title text-center mb-4 mt-1">Add a new provider</h2>
+	<hr>
+    <form method="POST" id="send">
+    
+    <div class="dropdown">
+        <div class="input-group-btn">
+            <button 
+            class="btn btn-light btn-md dropdown-toggle ml-4 mt-4 mb-3 w-50 "
+            type="button" 
+            id="provider_dropdown" 
+            data-toggle="dropdown"             
+            name="provider_dropdown" 
+            > Select Provider </button>
+            <span class="caret"></span>
+            <div class="dropdown-menu w-50" aria-labelledby="dropdownMenuButton">
+                {% for provider in now_support %}
+                <a class="dropdown-item" href="#">{{ provider }}</a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    </form>
+
+    <!-- will hide sibilings -->
+    <div class="container mt-3">
+        <!--ftx input group-->
+    <form method="POST" name="Ftx" id="Ftx" style="display:none" autocomplete="off">
+    <div class="container mt-3">
+        <div class="form-group">
+            <div class="form-group">
+                <input
+                type="hidden"
+                id="ftx_provider"
+                name="provider">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Name this one:</label>
+                <input
+                 class="form-control" 
+                 id="ftx_account_name"
+                 name="account_name">
+            </div>
+            <div class="form-group">
+                <label class="form-label">API KEY</label>
+                <input
+                 class="form-control" 
+                 id="ftx_api_key"
+                 name="api_key">
+            </div>
+            <div class="form-group">
+                <label class="form-label">API SECRET</label>
+                <input
+                 class="form-control"
+                 id="ftx_api_secret"
+                 name="api_secret">
+            </div>
+            <div class="col-md-12 text-center mt-4 mb-2">
+                <button type="submit" class="btn btn-secondary"> Submit  </button>
+            </div> 
+        </div> 
+    </div><!-- end of container -->
+    </form> 
+
+    <form method="POST" name="Max" id="Max" style="display:none" autocomplete="off">
+    <!--max input group-->
+    <div class="container mt-3">
+        <div class="form-group">
+            <div class="form-group">
+                <input
+                type="hidden"
+                id="max_provider"
+                name="provider">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Name this one:</label>
+                <input
+                 class="form-control" 
+                 id="max_account_name"
+                 name="account_name">
+            </div>
+            <div class="form-group">
+                <label class="form-label">API KEY</label>
+                <input
+                 class="form-control" 
+                 id="max_api_key"
+                 name="api_key">
+            </div>
+            <div class="form-group">
+                <label class="form-label">API SECRET</label>
+                <input 
+                 class="form-control"
+                 id="max_api_secret"
+                 name="api_secret">
+            </div>
+            <div class="col-md-12 text-center mt-4 mb-2">
+                <button type="submit" class="btn btn-secondary"> Submit  </button>
+            </div> 
+        </div> 
+    </div><!-- end of container -->
+    </form> 
+
+    <form method="POST" name="Ctbc" id="Ctbc" style="display:none" autocomplete="off">
+    <!--ctbc input group-->
+    <div class="container mt-3">
+        <div class="form-group">
+            <div class="form-group">
+                <input
+                type="hidden"
+                id="ctbc_provider"
+                name="provider">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Name this one:</label>
+                <input
+                 class="form-control" 
+                 id="ctbc_acount_name"
+                 name="account_name">
+            </div>
+            <div class="form-group">
+                <label class="form-label">身分證字號</label>
+                <input
+                 class="form-control" 
+                 id="ctbc_id"
+                 name="id">
+            </div>
+            <div class="form-group">
+                <label class="form-label">使用者代號</label>
+                <input 
+                 class="form-control"
+                 id="ctbc_usercode"
+                 name="usercode">
+            </div>
+            <div class="form-group">
+                <label class="form-label">密碼</label>
+                <input
+                 type="password" 
+                 class="form-control"
+                 id="ctbc_password"
+                 name="password">
+            </div>
+            <div class="col-md-12 text-center mt-4 mb-2">
+                <button type="submit" class="btn btn-secondary"> Submit  </button>
+            </div> 
+        </div> 
+    </div><!-- end of container -->
+    </div>
+    </form> 
+
+
+
+
+    
+
+</article>
+</div>
+</div>
+</div>
+
+<script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+<script>
+
+       
+    $(".dropdown-menu a ").click(function(){
+        var sel = $(this).text()
+        $(this).parents(".input-group-btn").find('.btn').text($(this).text());
+        $("#" + sel).show().siblings().hide();
+
+    //把 sel 加到 submit 裡面
+        $('form').submit(function(){
+
+            $('input#ftx_provider').val(sel);
+            $('input#max_provider').val(sel);
+            $('input#ctbc_provider').val(sel);
+
+            return true;
+        });
+    });
+
+    
+    
+    
+</script>
+
+<!--$("#myselect").on("change", function() {
+    $("#" + $(this).val()).show().siblings().hide();
+})-->
+
+
+
+{% endblock %}
+

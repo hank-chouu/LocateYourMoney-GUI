@@ -1,0 +1,39 @@
+{% extends 'add_provider.html' %}
+
+{% block modal %}
+<div class="modal fade" id="logoutmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Last Check</h5>
+        
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to logout now?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal" id="modalclose">Close</button>
+        <form action="{{url_for('auth.logout')}}" method="POST" >
+        <input type="submit" class="btn btn-secondary"value="Logout">
+      </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+<script>
+$(document).ready(function(){
+  console.log('window is loaded')
+  $('#logoutmodal').modal('show')
+  $('#modalclose').click(function(){
+    $('#logoutmodal').modal('hide')
+  })
+  
+})
+
+</script>
+{% endblock %}
+

@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{%block title %}Add providers {% endblock title %}
+
+{% block navbar %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbar"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbar">
+      <div class="navbar-nav">
+        
+        <a class="nav-item nav-link" id="home" href="/">Home</a>
+        <a class="nav-item nav-link" id="add_provider" href="/add-provider">Add provider</a>
+        <a class="nav-item nav-link" id="logout" href="/logout-confirm-settings">Logout</a>
+        
+      </div>
+    </div>
+  </nav>
+{% endblock %}
+
+{% block content %}
+
+
+<div class="container mt-5">
+<div class="row justify-content-center">
+<div class="card" style="width: 30rem;">
+<article class="card-body">
+    <h4 class="card-title mb-4 mt-1">Delete a provider</h4>
+	<hr>
+    
+    <form method="POST" id="form">
+        <div class="dropdown">
+            <div class="input-group-btn">
+                <button 
+                class="btn btn-light btn-md dropdown-toggle ml-4 mb-4 mt-3"
+                type="button" 
+                id="provider_dropdown" 
+                data-toggle="dropdown"             
+                name="provider_dropdown"
+                style="width: 220px;" 
+                > Select Provider </button>
+                <span class="caret"></span>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"  style="width: 220px;">
+                    {% for acc in accounts %}
+                    <a class="dropdown-item" href="#">{{ acc }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <input
+            type="hidden"
+            id="provider"
+            name="provider">
+        </div>
+         <div class="ml-4 text-start mb-4">
+            <button type="submit" class="btn btn-secondary" style="width: 220px;"> Delete  </button>
+        </div>
+    
+    </form>
+    <hr>
+    <h4 class="card-title mb-4 mt-1">Delete your account</h4>
+
+    <form action="{{url_for('auth.delete_user_confirm')}}" method="POST" id="delete">
+        <div class="ml-4 text-start mb-2">
+            <button type="submit" class="btn btn-secondary" style="width: 220px;"> Delete  </button>
+        </div>
+    </form>
+	
+    
+</article>
+</div>
+</div>
+</div>
+
+<script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+<script>
+
+       
+    $(".dropdown-menu a ").click(function(){
+        var sel = $(this).text()
+        $(this).parents(".input-group-btn").find('.btn').text($(this).text());
+        $("#" + sel).show().siblings().hide();
+
+        $('form').submit(function(){
+
+        $('input#provider').val(sel);
+
+
+        return true;
+        });
+        
+    });
+
+    
+    
+    
+</script>
+
+{% endblock %}
+

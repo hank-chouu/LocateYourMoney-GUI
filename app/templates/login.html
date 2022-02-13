@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{%block title %}Login{% endblock title %}
+
+{% block content %}
+
+
+
+
+<div class="container-fluid mt-7">
+<div class="row">
+    <div class="col-7 px-0">
+        <div class="jumbotron text-center" style="height: 25rem;">
+            <h1 class="display-4 mt-5">LocateYourMoney.app</h1>
+            <div class="col-lg-8 mx-auto">
+              <p class="lead mt-4">A simple tool to keey track of all your accounts' balance.</p>
+              </div>
+        </div>
+    </div>
+    <div class="col-5 px-0">
+        <div class="card" style="height: 25rem;">
+            <article class="card-body">
+                <h2 class="card-title text-center mb-4 mt-5 ">Login</h2>
+                <hr>
+                <form method="POST">
+                    <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"> <i class="fa fa-user"></i> </span>
+                         </div>
+                         <input 
+                         type="username" 
+                         class="form-control" 
+                         id="loginusername" 
+                         name="loginusername"
+                         placeholder="user name">
+                    </div> <!-- input-group.// -->
+                    </div> <!-- form-group// -->
+                    <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
+                         </div>
+                         <input
+                         type="password" 
+                         class="form-control" 
+                         id="loginpassword"
+                         name="loginpassword"
+                         placeholder="********">
+                    </div> <!-- input-group.// -->
+                    </div> <!-- form-group// -->
+                    <div class="form-group">
+                    <button type="submit" class="btn btn-secondary btn-block"> Login  </button>
+                    </div> <!-- form-group// -->
+                    <p class="text-center"><a href="/signup" class="btn">Haven't registered? Sign up.</a></p>
+                </form>
+            </article>
+        </div>
+    </div>
+    
+
+</div>
+</div>
+
+{% endblock %}
+

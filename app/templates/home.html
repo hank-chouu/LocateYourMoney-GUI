@@ -1,1 +1,149 @@
+{% extends 'base.html' %}
 
+{%block title %}Home{% endblock title %}
+
+{% block navbar %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbar"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbar">
+      <div class="navbar-nav">
+          
+        <a class="nav-item nav-link" id="add_provider" href="/add-provider">Add provider</a>
+        <a class="nav-item nav-link" id="settings" href="/settings">Settings</a>
+        <a class="nav-item nav-link" id="logout" href="/logout-confirm-home">Logout</a>
+        
+      </div>
+    </div>
+  </nav>
+{% endblock %}
+
+{% block content %}
+
+
+
+<div class="jumbotron text-center">
+  <h1 class="display-4">LocateYourMoney.app</h1>
+  <div class="col-lg-8 mx-auto">
+    <p class="lead mt-4">This is a simple tool to keey track of all your accounts' balance.</p>
+    </div>
+</div>
+
+
+{% if type == 0 %}
+
+<div class="row justify-content-center">
+  
+  <div class="col-xs-1 text-center">
+    <h2>Welcome back, {{ username }}.</h2>
+    <p class="mt-4">It seems that you haven't create any bank nor crypto account yet.</p>
+    <p class="mt-0">( Last update: {{ last_date }} )</p>
+    <a href="/add-provider" class="btn mb-5"><h5 class="text-center">Click here to create one. </h5></a>
+  </div>
+  
+</div>
+
+{% elif type == 1 %}
+
+<div class="row justify-content-center">
+  
+  <div class="col-xs-1 text-center">
+    <h2>Welcome back, {{ username }}.</h2>
+    <p class="mt-4">Your don't have any record yet. Come back another day!</p>
+  </div>
+  
+</div>
+
+
+{% else %}
+<div class="row justify-content-center">
+  
+  <div class="col-xs-1 text-center">
+    <h2>Welcome back, {{ username }}.</h2>
+    <p>Here is your latest update:</p>
+  </div>
+  
+</div>
+<div class="row mt-4">
+  <div class="col-5 justify-content-center">
+    <p> Last update: {{ last_date }}</p>
+    <div class="card mb-3">
+      <h6 class="card-header">Currently in bank accounts:</h6>
+          <div class="card-body">
+            <table class="table ">
+              <thead>
+                  <th>Account</th>
+                  <th>TWD</th>
+              </thead>
+              <tbody>
+                  {% for row in bank %}
+                  <tr>
+                      <td>{{ row.Account }}</td>
+                      <td>{{ row.TWD }}</td>
+                    </tr>
+                  {% endfor %}
+              </tbody>
+          </table>
+          </div>
+    </div>
+    
+    <div class="card mb-3">
+      <h6 class="card-header">Currently in Crypto accounts: </h6>
+          <div class="card-body">
+            <table class="table ">
+              <thead>
+                  <th>Account</th>
+                  <th>USD</th>
+              </thead>
+              <tbody>
+                  {% for row in crypto %}
+                  <tr>
+                      <td>{{ row.Account }}</td>
+                      <td>{{ row.USD }}</td>
+                    </tr>
+                  {% endfor %}
+              </tbody>
+          </table>
+        </div>
+    </div>
+    <div class="card mb-3">
+      <h6 class="card-header">Distribution: Bank</h6>
+          <div class="card-body">
+            <img src="/bank-pie-chart.png" class="img-fluid rounded mx-auto d-block" alt="my plot">
+          </div>
+    </div>
+    <div class="card mb-3">
+      <h6 class="card-header">Distribution: Crypto</h6>
+          <div class="card-body">
+            <img src="/crypto-pie-chart.png" class="img-fluid rounded mx-auto d-block" alt="my plot">
+          </div>
+    </div>
+    
+  </div>
+
+
+  <div class="col-7 justify-content-end">
+    <div class="card mb-3">
+      <h5 class="card-header">Recent change in bank balances</h5>
+          <div class="card-body">
+            <img src="/bank-changes-plot.png" class="img-fluid rounded mx-auto d-block" alt="my plot">
+          </div>
+    </div>
+    <div class="card mb-3 ">
+      <h5 class="card-header">Values in Crypto</h5>
+          <div class="card-body">
+            <img src="/crypto-bar-plot.png" class="img-fluid rounded mx-auto d-block" alt="my plot">
+          </div>
+    </div>
+  </div>
+</div>
+
+{% endif %}
+
+{% endblock %}
