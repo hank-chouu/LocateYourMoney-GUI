@@ -45,9 +45,8 @@ def signup():
             user_dict.update({nickname:{'username':username,
                                         'password':password,
                                         'info':{}}})
-            with open('user.json', 'w') as f:
-                json.dump(user_dict, f)
-            updateFile('user.json', user_file_id)
+            
+            updateFile('user.json', user_dict, user_file_id)
 
             user = User() 
             user.id = username
@@ -148,9 +147,8 @@ def add_account():
                     }
                 })
                 
-            with open('user.json', 'w') as f:
-                json.dump(user_dict, f)
-            updateFile('user.json', user_file_id)
+            
+            updateFile('user.json', user_dict, user_file_id)
             flash('Provider created successfully!', category='success')
 
             return redirect(url_for('auth.add_account'))
@@ -248,9 +246,7 @@ def delete_provider():
     acc = session.get('acc',None)
 
     user_dict[name]['info'].pop(acc)
-    with open('user.json', 'w') as f:
-        json.dump(user_dict, f)
-    updateFile('user.json', user_file_id)
+    updateFile('user.json', user_dict, user_file_id)
     
     return redirect(url_for('auth.settings'))
 
@@ -264,12 +260,8 @@ def delete_user():
     user_dict.pop(name)
     log.pop(name)
 
-    with open('user.json', 'w') as f:
-        json.dump(user_dict, f)
-    with open('log.json', 'w') as f:
-        json.dump(log, f)
-    updateFile('user.json', user_file_id)
-    updateFile('log.json', log_file_id)
+    updateFile('user.json', user_dict, user_file_id)
+    updateFile('log.json', log, log_file_id)
 
     logout_user()
     

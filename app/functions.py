@@ -1,22 +1,18 @@
-from calendar import c
 from datetime import datetime
 import json
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-from .google_drive import downloadFile
+from .google_drive import getFile
 
 
 log_file_id = '1ARGlhdeMGqaJ1gGslbV1zWO9fFhnlsy3'
 user_file_id = '1obX_BMPSTeL-VeG8pjuLOKPFXunFiio1'
 
 
-downloadFile('log.json', log_file_id)
-downloadFile('user.json', user_file_id)
-with open('user.json', 'r') as f:
-    user_dict = json.load(f)
-with open('log.json', 'r') as f:
-    log = json.load(f)
+
+user_dict = getFile('user.json', user_file_id)
+log = getFile('log.json', log_file_id)
 
 color = ['#1496BB', '#EBC944', '#F58B4C', '#829356', '#9A2617']
 
@@ -55,7 +51,7 @@ class Custom_plot(object):
             date_list1.append(datetime.strftime(i, '%Y/%m/%d'))
             
         length = 4 if len(date_list1) > 5 else len(date_list1)
-        recent_date = date_list1[0:length]
+        recent_date = date_list1[-length:]
         
         for date in recent_date:
             recent_log.append(self._user_log[date])
@@ -158,6 +154,31 @@ class Custom_plot(object):
 
         fig = plt.Figure()
         axis = fig.add_subplot(1,1,1)
+
+        from math import ceil, floor
+
+        def roundup(x, level):
+            return int(ceil(x/level))*level
+        def floordown(x, level):
+            return int(floor(x/level))*level
+
+        total_mean = bank_balance.mean(axis=1).mean()
+
+        ymax = total_mean
+        ymin = total_mean
+
+        level = bank_balance['Total'].max()/10
+
+        for i in bank_balance.columns:
+
+            col_max_round = roundup(bank_balance[i].max(), level=level)
+            col_min_floor =floordown(bank_balance[i].min(), level=level)
+            while ymax < col_max_round:
+                ymax+=level
+            while ymin > col_min_floor:
+                ymin-=level
+        
+        axis.set_ylim(ymin, ymax)
 
         if len(bank_balance.columns) == 2:
             bank_balance.iloc[:,0].plot.line(color = color,ax = axis)

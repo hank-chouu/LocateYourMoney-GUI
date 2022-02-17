@@ -5,7 +5,7 @@ from oauth2client.file import Storage
 from oauth2client.tools import run_flow
 
 from googleapiclient.discovery import build
-from googleapiclient.http import MediaFileUpload, MediaIoBaseDownload
+from googleapiclient.http import MediaFileUpload, MediaIoBaseDownload, MediaIoBaseUpload
 
 from urllib.parse import urlencode
 import requests
@@ -49,7 +49,7 @@ def get_credentials(access_token):
 
 
 
-def updateFile(file_name, file_id):
+def updateFile(file_name, file, file_id):
 
     access_token = refresh_access_token()
 
@@ -62,9 +62,10 @@ def updateFile(file_name, file_id):
     'name': file_name,
     'mimeType': '*/*'
     }
-    media = MediaFileUpload(file_name,
-                            mimetype='*/*',
-                            resumable=True)
+    file = io.BytesIO(json.dumps(file).encode('utf-8'))
+    media = MediaIoBaseUpload(file,
+                              mimetype='*/*',
+                              resumable=True)
     file = drive_service.files().update(body=file_metadata, 
                                         media_body=media,
                                         fileId =  file_id, 
@@ -72,7 +73,7 @@ def updateFile(file_name, file_id):
                                         fields='id, parents').execute()
     print ('File ID: ' + file.get('id'))
 
-def downloadFile(local_file_name, file_id):
+def getFile(local_file_name, file_id):
 
     access_token = refresh_access_token()
 
@@ -89,9 +90,9 @@ def downloadFile(local_file_name, file_id):
         print("{} downloaded {}%".format(local_file_name, status.progress() * 100))
 
     fh.seek(0)
-    with open(local_file_name, 'wb') as f:
-        f.write(fh.read())
-        f.close()
+    file = json.loads(fh.read().decode('utf-8'))
+    fh.close()
+    return file
 
 # updataFile('user.json')
 
