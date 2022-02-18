@@ -1,0 +1,30 @@
+.jumbotron {
+    background-size: cover;
+    background-position: top center;
+    height: auto;
+    width:100%;
+  }
+  .mt-7 { margin-top:3.5rem!important; }
+
+  .display-4 {
+    font-size: 1.5rem;
+ }
+  
+ 
+ @media (min-width: 768px) {
+    .display-4 {
+     font-size: 2.3rem;
+   }
+ }
+ 
+ @media (min-width: 991px) {
+    .display-4 {
+     font-size: 3.2rem;
+   }
+ }
+ 
+ @media (min-width: 1200px) {
+    .display-4 {
+     font-size: 3.5rem;
+   }
+ }
