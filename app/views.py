@@ -1,4 +1,4 @@
-from flask import Blueprint, redirect, render_template, request, flash, url_for, Response
+from flask import Blueprint, redirect, render_template, request, flash, url_for, Response, send_file
 from flask_login import login_required, current_user
 import json
 import io
@@ -28,9 +28,8 @@ def crypto_plot():
     ID = current_user.id
     balance = Custom_plot(user_dict[ID], log[ID])
     fig = balance.grouped_bar()
-    output = io.BytesIO()
-    FigureCanvas(fig).print_png(output)
-    return Response(output.getvalue(), mimetype='image/png')
+    
+    return nocache(fig_response(fig))
 
 @views.route('/bank-changes-plot.png')
 def bank_changes():
@@ -38,9 +37,8 @@ def bank_changes():
     ID = current_user.id
     balance = Custom_plot(user_dict[ID], log[ID])
     fig = balance.lines_chart()
-    output = io.BytesIO()
-    FigureCanvas(fig).print_png(output)
-    return Response(output.getvalue(), mimetype='image/png')  
+    
+    return nocache(fig_response(fig))
 
 @views.route('/crypto-pie-chart.png')
 def crypto_pie():
@@ -48,9 +46,8 @@ def crypto_pie():
     ID = current_user.id
     balance = Custom_plot(user_dict[ID], log[ID])
     fig = balance.get_pie('crypto')
-    output = io.BytesIO()
-    FigureCanvas(fig).print_png(output)
-    return Response(output.getvalue(), mimetype='image/png')   
+    
+    return nocache(fig_response(fig)) 
 
 @views.route('/bank-pie-chart.png')
 def bank_pie():
@@ -58,9 +55,20 @@ def bank_pie():
     ID = current_user.id
     balance = Custom_plot(user_dict[ID], log[ID])
     fig = balance.get_pie('bank')
-    output = io.BytesIO()
-    FigureCanvas(fig).print_png(output)
-    return Response(output.getvalue(), mimetype='image/png')
+    
+    return nocache(fig_response(fig))
+
+def fig_response(fig):
+    """Turn a matplotlib Figure into Flask response"""
+    img_bytes = io.BytesIO()
+    fig.savefig(img_bytes)
+    img_bytes.seek(0)
+    return send_file(img_bytes, mimetype='image/png')
+
+def nocache(response):
+    """Add Cache-Control headers to disable caching a response"""
+    response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
+    return response
 
 
 
